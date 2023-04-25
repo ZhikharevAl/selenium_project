@@ -7,7 +7,9 @@ class SeleniumPage(BasePage):
 
     def __init__(self, driver):
         super().__init__(driver, self.URL)
+        self.title_text = "svg[id$='1']"
 
-    def find_svg_element(self, id):
-        selector = f"svg[id$='{id}']"
-        return self.element_is_visible((By.CSS_SELECTOR, selector))
+    def get_title_text(self):
+        return self.get_text(self.title_text)
+
+
