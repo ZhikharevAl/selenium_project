@@ -6,10 +6,7 @@ def test_example(driver):
     page.open()
 
     # Locate the child text element within the svg element
-    el = page.find_svg_element("1")
-
-    # Print the text of the child element
-    print(el.text)
+    el = page.get_title_text()
 
     # Check if the text matches the expected value
-    assert "Selenium" in el.text
+    assert "Selenium" in el
