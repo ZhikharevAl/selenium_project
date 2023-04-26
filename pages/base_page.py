@@ -1,6 +1,8 @@
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait as wait
 
 
 class BasePage:
@@ -11,67 +13,22 @@ class BasePage:
     def open(self):
         self.driver.get(self.url)
 
-    def element_is_visible(self, locator, timeout=5):
-        self.go_to_element(self.element_is_present(locator))
-        return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+    def get_text(self, selector):
+        element = wait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, selector))
+        )
+        return element.text
 
-    def elements_are_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+    def click_button(self, selector):
+        button = wait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
+        )
+        button.click()
 
-    def element_is_present(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+    def click_element(self, selector):
+        element = wait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
+        element.click()
 
-    def elements_are_present(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
-
-    def element_is_not_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-
-    def element_is_clickable(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
-
-    def go_to_element(self, element):
-        self.driver.execute_script("arguments[0].scrollIntoView();", element)
-
-    def action_double_click(self, element):
-        action = ActionChains(self.driver)
-        action.double_click(element)
-        action.perform()
-
-    def action_right_click(self, element):
-        action = ActionChains(self.driver)
-        action.context_click(element)
-        action.perform()
-
-    def action_drag_and_drop_by_offset(self, element, x_coords, y_coords):
-        action = ActionChains(self.driver)
-        action.drag_and_drop_by_offset(element, x_coords, y_coords)
-        action.perform()
-
-    def action_drag_and_drop_to_element(self, what, where):
-        action = ActionChains(self.driver)
-        action.drag_and_drop(what, where)
-        action.perform()
-
-    def action_move_to_element(self, element):
-        action = ActionChains(self.driver)
-        action.move_to_element(element)
-        action.perform()
-
-    def action_move_to_element_with_offset(self, element, x_coords, y_coords):
-        action = ActionChains(self.driver)
-        action.move_to_element_with_offset(element, x_coords, y_coords)
-        action.perform()
-
-    def execute_script(self, script):
-        self.driver.execute_script(script)
-
-    def get_current_url(self):
-        return self.driver.current_url
-
-    def get_current_url_title(self):
-        get_url_title = self.driver.title
-        print(get_url_title)
-
-    def quit(self):
-        self.driver.quit()
+    def wait_for_element(self, selector):
+        element = wait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
+        element.click()
