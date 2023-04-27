@@ -19,6 +19,12 @@ class BasePage:
         )
         return element.text
 
+    def get_text_xpath(self, selector):
+        element = wait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, selector))
+        )
+        return element.text
+
     def click_button(self, selector):
         button = wait(self.driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
@@ -32,3 +38,5 @@ class BasePage:
     def wait_for_element(self, selector):
         element = wait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
         element.click()
+
+
